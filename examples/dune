@@ -1,3 +1,7 @@
 (executable
  (name dscheck_counter)
  (libraries dscheck))
+
+ (executable
+ (name cas_counter)
+ (libraries dscheck))
