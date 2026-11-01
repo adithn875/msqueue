@@ -1,0 +1,3 @@
+(executable
+ (name dscheck_counter)
+ (libraries dscheck))
