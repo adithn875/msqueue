@@ -1,0 +1,11 @@
+(executable
+ (name test_msqueue)
+ (libraries msqueue))
+
+(executable
+ (name linearizability_test)
+ (libraries msqueue qcheck-lin.domain))
+
+(executable
+ (name bug2_test)
+ (libraries msqueue))

@@ -2,6 +2,19 @@
  (name dscheck_counter)
  (libraries dscheck))
 
- (executable
+(executable
  (name cas_counter)
+ (libraries dscheck))
+
+(executable
+ (name domain_demo))
+
+(executable
+ (name atomic_counter))
+
+(executable
+ (name unsafe_counter))
+
+(executable
+ (name dscheck_tail)
  (libraries dscheck))

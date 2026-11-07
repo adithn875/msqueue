@@ -1,26 +1,20 @@
-module Atomic = Dscheck.TracedAtomic
-
+let rec increment counter =
+  let old_value = Atomic.get counter in
+  let new_value = old_value + 1 in
+  if Atomic.compare_and_set counter old_value new_value then
+    ()
+else
+increment counter
 let () =
-  Atomic.trace (fun () ->
-    let counter = Atomic.make 0 in
-
-    let increment () =
-      let finished = ref false in
-
-      while not !finished do
-        let current = Atomic.get counter in
-
-        if Atomic.compare_and_set counter current (current + 1) then
-          finished := true
-      done
-    in
-
-    Atomic.spawn increment;
-    Atomic.spawn increment;
-    Atomic.spawn increment;
-
-    Atomic.final (fun () ->
-      Printf.printf "Final counter: %d\n" (Atomic.get counter);
-      Atomic.check (fun () -> Atomic.get counter = 3)
-    )
-  )
+let counter = Atomic.make 0 in
+let d1 = Domain.spawn (fun () ->
+  for i = 1 to 100_000 do
+  increment counter
+  done)in
+let d2 = Domain.spawn (fun ()->
+  for i = 1 to 100_000 do
+  increment counter
+  done )in
+  Domain.join d1;
+  Domain.join d2;
+  Printf.printf "final counter : %d/n "(Atomic.get counter)
