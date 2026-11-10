@@ -107,10 +107,13 @@ let test_concurrent_consumers () =
       | None -> ()
       | Some value ->
           Mutex.lock lock;
-          assert (value >= 0 && value < n);
-          assert (not seen.(value));
-          seen.(value) <- true;
-          Mutex.unlock lock;
+Fun.protect
+  ~finally:(fun () -> Mutex.unlock lock)
+  (fun () ->
+    assert (value >= 0 && value < n);
+    assert (not seen.(value));
+    seen.(value) <- true
+    );
           loop ()
     in
     loop ()

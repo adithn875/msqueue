@@ -20,10 +20,22 @@ let () =
 
   Printf.printf "All four producers finished\n";
 
-  (* Consume all elements *)
-  let count = ref 0 in
-  while Msqueue.pop q <> None do
-    incr count
-  done;
+let count = ref 0 in
+let seen = Array.make 40_000 false in
 
-  Printf.printf "Elements retrieved: %d\n" !count
+let rec loop () =
+  match Msqueue.pop q with
+  | None -> ()
+  | Some value ->
+      assert (value >= 0 && value < 40_000);
+      assert (not seen.(value));
+      seen.(value) <- true;
+      incr count;
+      loop ()
+in
+
+loop ();
+assert (Msqueue.pop q = None);
+Array.iter (fun present -> assert present) seen;
+assert (!count = 40_000);
+  Printf.printf "All four producers passed! Retrieved %d unique elements.\n" !count

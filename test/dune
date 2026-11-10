@@ -1,10 +1,14 @@
-(executable
+(test
  (name test_msqueue)
- (libraries msqueue))
+ (libraries msqueue threads))
 
-(executable
+(test
  (name linearizability_test)
  (libraries msqueue qcheck-lin.domain))
+
+(test
+ (name mixed_stress_test)
+ (libraries msqueue threads))
 
 (executable
  (name bug2_test)

@@ -30,3 +30,7 @@
  (executable
  (name dscheck_mixed)
  (libraries msqueue dscheck))
+
+ (executable
+ (name dscheck_mixed_3x3)
+ (libraries msqueue dscheck))
