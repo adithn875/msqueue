@@ -2,7 +2,9 @@
 module Checked = Msqueue.Make (Dscheck.TracedAtomic)
 
 let () =
-  Dscheck.TracedAtomic.trace (fun () ->
+  Dscheck.TracedAtomic.trace
+  ~interleavings:stdout
+  (fun () ->
     let q = Checked.create () in
     let result1 = Dscheck.TracedAtomic.make None in
     let result2 = Dscheck.TracedAtomic.make None in
