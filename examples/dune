@@ -18,3 +18,11 @@
 (executable
  (name dscheck_tail)
  (libraries dscheck))
+
+ (executable
+ (name dscheck_msqueue)
+ (libraries msqueue dscheck))
+
+ (executable
+ (name dscheck_consumers)
+ (libraries msqueue dscheck))
