@@ -13,3 +13,7 @@
 (executable
  (name bug2_test)
  (libraries msqueue))
+
+ (test
+ (name stress_4x4)
+ (libraries msqueue threads))
