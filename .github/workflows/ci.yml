@@ -1,0 +1,33 @@
+name: OCaml CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: "5.2"
+
+      - name: Update opam repository
+        run: opam update
+
+      - name: Install dependencies
+        run: |
+          opam install dune.3.24.0 dscheck.0.6.0 qcheck-lin.0.10
+
+      - name: Build
+        run: opam exec -- dune build
+
+      - name: Run tests
+        run: opam exec -- dune runtest --force
